@@ -4,4 +4,5 @@
 
 #include "./animation.h"
 #include "./animation_center.h"
+#include "./animation_layer.h"
 #include "./canvas.h"
