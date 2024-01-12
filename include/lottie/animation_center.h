@@ -26,7 +26,7 @@ class AnimationCenter {
   void Stop(const char* name);
   void SetSpeed(float speed, const char* name);
 
-  void SetRenderQuality(std::uint32_t quality);
+  void SetRenderQuality(std::uint64_t quality);
   void SetRenderQuality(const char* quality);
 
   void SetSearchPaths(const std::vector<std::string>& paths);

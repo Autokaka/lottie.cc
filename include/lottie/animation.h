@@ -34,8 +34,30 @@ struct AnimationConfig {
   std::string image_preserve_aspect_ratio = "xMidYMid slice";
 };
 
-enum class AnimationState {
-  // TODO(Autokaka):
+// TODO(Autokaka): Find out total states, using player state for now...
+enum class AnimationPlayState {
+  kIdle,
+  kBuffering,
+  kPlaying,
+  kPaused,
+  kStopped,
+};
+
+enum class AnimationEvent {
+  kWillDrawFrame,
+  kDidDrawFrame,
+  kLoopComplete,
+  kComplete,
+  kSegmentStart,
+  kSegmentEnd,
+  kConfigReady,     // when initial config is done
+  kCanPlayThrough,  // when all parts of the animation have been loaded
+  kDataIncomplete,  // when part of the animation can not be loaded
+  kWillLoadImages,
+  kDidLoadImages,
+  kPlayStateChange,
+  kWillDestroy,
+  kError,
 };
 
 class Animation {
@@ -68,12 +90,15 @@ class Animation {
   [[nodiscard]] int GetLoopTimes() const;
   void SetLoopTimes(int loop_times);
 
-  [[nodiscard]] AnimationState GetState() const;
-  void SetState(const AnimationState& state);
+  [[nodiscard]] AnimationPlayState GetState() const;
+  void SetState(const AnimationPlayState& state);
+
+  [[nodiscard]] bool IsHidden() const;
+  void SetHidden(bool hidden);
 
   void IncludeLayers(const std::vector<AnimationLayer::Ptr>& layers);
 
-  std::size_t AddEventListener(const char* event, const std::function<void()>& callback);
+  std::size_t AddEventListener(const AnimationEvent& event, const std::function<void()>& callback);
   void RemoveEventListener(std::size_t token);
 
  private:
